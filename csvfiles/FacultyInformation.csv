@@ -1,0 +1,50 @@
+Name,Title,Gender (Assumed),Research Interests
+"Balasubramonian, R.",Professor,Male,"Computer architecture, multi-core processors, memory hierarchy bottlenecks, instruction-level parallelism, power-efficient processor"
+"Berzins, M.",Professor,Male,My research area is the study of novel computational algorithms for the numerical solution of partial differential equations (p.d.e.s).
+"Bhaskara, A.",Assistant Professor,Male,Theoretical computer science and machine learning.
+"Bojnordi, M.",Assistant Professor,Male,"Computer architecture, new memory technologies, high-performance memory systems, and energy-efficient computing."
+"Brown, R.",Dean of Engineering and Professor,Male,Chemical Sensors; Neural Interfaces; Electronic Circuit Clocking; Circuit Design; High Performance Microprocessors; Mixed Signal Microprocessors; Biomedical Implants.
+"Brunvand, E.",Assistant Professor,Male,Computer architecture and VLSI systems
+"Cardona-Rivera, R.",Assistant Professor,Male,"Computational psychology, artificial intelligence, game design, interactive narrative"
+"Cohen, E.",Professor,Female,"Problems in modeling, graphics, and visualization which require geometric computation and analysis."
+"Denning, T.",Assistant Professor,Female,"Security and Privacy, Human-Centric Computing"
+"Flatt, M.",Professor,Male,Practical and theoretical aspects of programming languages and programming environments.
+"Gopalakrishnan, G.",Professor,Male,"Dynamic formal verification of message passing (MPI) and thread programs, formal analysis/verification of protocols, Verification tool development"
+"Hall, M.",Professor,Female,"Our research focuses on compiler-based approaches to obtaining high performance on state-of-the-art and experimental architectures, including multi-cores"
+"Hasen, C.",Professor,Male,"Visualization, computer graphics, parallel computation, computer vision"
+"Henderson, T.",Professor,Male,The long range goals of my research are to contribute to the understanding of human intelligence and to participate in the development of intelligent machine systems.
+"Hermans, T.",Assistant Professor,Male,Autonomous learning and perception in robots
+"Hollerbach, J.",Professor,Male,"Robotics, teleoperation, virtual reality, and human motor control"
+"Jensen, P.","Associate Professor, Lecturer",Male,na
+"Johnson, C.",Distinguished Professor,Male,Scientific Computing and Visualization
+"Johnson, D.","Assistant Professor, Lecturer",Male,"Geometric computation, haptics, robotics, educational research"
+"Jones, B.","Assistant Professor, Lecturer",Male,"Computer graphics, physical simulation"
+"Kasera, S.",Professor,Male,"Networks and systems - technologies, protocols and applications encompassing mobile and pervasive systems and wireless networks, network security and reliability"
+"Kavan, L.",Assistant Professor,Male,Computer graphics and animation.
+"Kessler, B.",Professor,Male,Systems software and software engineering
+"Kirby, M.",Associate Director & Professor,Male,Scientific computing and visualization
+"Kopta, D.","Assistant Professor, Lecturer",Male,"Ray tracing, computer graphics, computer architecture"
+"Lex, A.",Assistant Professor,Male,Interactive data visualization especially applied to molecular biology and pharmacology.
+"Li, F.",Professor,Male,"Database systems and large-scale data management systems for various data sources, formats, applications, and data processing environments. Security issues in data management."
+"Meyer, M.","Associate Professor, USTAR",Female,"Designing visualization systems that support exploratory, complex data analysis tasks for scientific research"
+"Parker, D.","Associate Professor, Lecturer",Female,na
+"Pascucci, V.",Professor,Male,"Computer graphics, computational geometry, geometric programming, and solid modeling"
+"Phillips, J.",Associate Professor,Male,"Algorithms for Data Analytics: Handling Uncertainty, Computational Geometry, Data Mining, Machine Learning, Computational Statistics, Databases"
+"Pakamaric, Z.",Associate Professor,Male,"Formal methods for analysis and verification of complex systems, practical, highly automatic, and scalable formal verification techniques for software"
+"Ramalingam, S.",Associate Professor,Male,"Computer Vision, Machine Learning, Robotics (Autonomous Driving applications), and Discrete Optimization"
+"Regehr, J.",Professor,Male,"Embedded systems, sensor networks, static analysis, real-time systems, operating systems"
+"Riloff, E.",Professor,Female,"Natural language processing, information retrieval, and artificial intelligence"
+"Shankar, V.","Assistant Professor, Lecturer",Male,"Radial basis function, immersed boundary methods"
+"Srikumar, V.",Assistant Professor,Male,Machine Learning; Natural Language Processing
+"de St. Germain, J.","Associate Professor, Lecturer",Male,"Reverse Engineering and Constraint Optimization, Artificial Intelligence, technological aids for education"
+"Stustman, R.",Assistant Professor,Male,"Distributed Systems, Operating Systems, and Databases"
+"Sundar, H.",Assistant Professor,Male,Parallel algorithms; scientific computing; inverse problems; soft tissue and cardiovascular mechanics; image analysis
+"Van der Merwe, K.",Associate Professor,Male,"Networking systems research including network management, control and operation, mobile networking, network evolution, network security and cloud computing."
+"Venkatasubramanian, S.",Professor,Male,"I work in algorithms and computational geometry, with a current focus on data mining and large-data (and large-dimension) geometric questions."
+"Phillips, B.",Assistant Professor,Female,"Topological data analysis, scientific visualization, information visualization, computational topology, computational geometry, computational biology and bioinformatics, machine learning, and data mining."
+"Whitaker, R.",Director and Professor,Male,"Image processing, medical image analysis, data analysis and visualization, geometry processing"
+"Wiese, J.",Assistant Professor,Male,"Personal data, HCI"
+"Young, R.","Professor, EAE",Male,"Artificial Intelligence, Video games, Interactive narrative"
+"Yuksel, C.","Assistant Professor, USTAR",Male,"Computer Graphics -- physically-based simulation, image synthesis, GPU algorithms."
+"Zachary, J.","Professor, Lecturer",Male,"I do research into the application of computers to education, and I teach extensively at the undergraduate and graduate levels."
+"Zhe, S.",Assistant Professor,Male,"Probabilistic graphical models, Bayesian nonparametric, approximate inference, Bayesian deep learning, sparse learning, large-scale machine learning and kernel methods."
