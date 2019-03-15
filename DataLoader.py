@@ -7,11 +7,27 @@ def getallclasses():
                 "csvfiles/Fall2018.csv", "csvfiles/Spring2015.csv", "csvfiles/Spring2016.csv",
                 "csvfiles/Spring2017.csv", "csvfiles/Spring2018.csv"]
     for file in csvfiles:
-        toreturn.update(readinfile(file))
+        toreturn.update(readinclassfile(file))
     return toreturn
 
 
-def readinfile(filename):
+def getallinstructors():
+    toreturn = []
+
+    file = open("csvfiles/FacultyInformation.csv")
+
+    for line in file:
+        regex = \
+            r"^\"(.{2,50}),(.{2,50})\",\"(.{2,50})\",(.{5,50}),(Male|Female),(\"\d+,\d+\"|\d+),(\"\d+,\d+\"|\d+),(\"\d+,\d+\"|\d+),(.*)$"
+        match = re.match(regex, line)
+        if match:
+            # 1. Last 2. First 3. Intname 4. Title 5. Gender 6. Salary 7. Benifits 8. Leave 9. Intrests
+            toreturn.append(Instructor(match.group(2), match.group(1), match.group(3), match.group(4), match.group(5),
+                                       match.group(6), match.group(7), match.group(8), match.group(9)))
+    return toreturn
+
+
+def readinclassfile(filename):
     toreturn = {}
 
     file = open(filename)
@@ -65,3 +81,21 @@ class Class:
     def getinstructors(self, instructors):
         return instructors.split(" AND ")
 
+
+class Instructor:
+
+    def __init__(self, first, last, intname, title, sex, salary, benifits, leave, researchinterests):
+        self.first = first
+        self.last = last
+        self.instructorname = intname
+        self.positions = self.getpositions(title)
+        self.sex = sex
+        self.salary = int(salary.replace("\"", "").replace("\'", "").replace(",", ""))
+        self.benifits = int(benifits.replace("\"", "").replace("\'", "").replace(",", ""))
+        self.leave = int(leave.replace("\"", "").replace("\'", "").replace(",", ""))
+        self.pay = self.salary + self.benifits + self.leave
+        self.researchtext = researchinterests
+        self.classes = []
+
+    def getpositions(self, title):
+        return title.split(" AND ")

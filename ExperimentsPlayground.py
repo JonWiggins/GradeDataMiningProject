@@ -65,25 +65,41 @@ def distance(first, second):
     return np.sqrt(magnitude)
 
 
-ideal = ("Ideal", [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
+def printpremilresults():
+    allclasses = getallclasses()
+    avgs = averagebycoursenumber(allclasses)
+    ideal = ("Ideal", [1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
-allclasses = getallclasses()
+    units = dicttounitvec(avgs)
+    print("CourseNum\tDistanceFromIdeal\tAvgVec")
+    for u in units.items():
+        print(u[0] + "\t" + str(distance(u[1], ideal[1])) + "\t" + str(u[1]))
 
-avgs = averagebycoursenumber(allclasses)
+    avgperson = averagebyinstructor(allclasses)
 
-
-units = dicttounitvec(avgs)
-print("CourseNum\tDistanceFromIdeal\tAvgVec")
-for u in units.items():
-    print(u[0] + "\t" + str(distance(u[1], ideal[1])) + "\t" + str(u[1]))
-
-avgperson = averagebyinstructor(allclasses)
-
-units = dicttounitvec(avgperson)
-print("Instructor\tDistanceFromIdeal\tAvgVec")
-for u in units.items():
-    print(u[0] + "\t" + str(distance(u[1], ideal[1])) + "\t" + str(u[1]))
+    units = dicttounitvec(avgperson)
+    print("Instructor\tDistanceFromIdeal\tAvgVec")
+    for u in units.items():
+        print(u[0] + "\t" + str(distance(u[1], ideal[1])) + "\t" + str(u[1]))
 
 
+def wagegapfinder():
+    instructors = getallinstructors()
+    maletotal = 0
+    malecount = 0
+    femaletotal = 0
+    femalecount = 0
 
+    for instructor in instructors:
+        if instructor.sex == "Male":
+            malecount += 1
+            maletotal += instructor.pay
+        else:
+            femalecount += 1
+            femaletotal += instructor.pay
+
+    print("Male Average Pay: " + str(maletotal / malecount) + " Female Average Pay: " + str(femaletotal / femalecount))
+
+
+wagegapfinder()
 
