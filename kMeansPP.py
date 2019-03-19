@@ -53,10 +53,3 @@ def kMeansPP(metrics, centerCount, distanceFunction):
                 break
 
     return centersToSets(centers, metrics, distanceFunction)
-    
-    
-def intDistance(intOne, intTwo):
-    return abs(intOne - intTwo)
-   
-ints = [4, 5, 100, 101]
-print(kMeansPP(ints, 2, intDistance))
