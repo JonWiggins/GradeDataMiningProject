@@ -2,24 +2,29 @@ from DataLoader import *
 from kMeansPP import *
 from jaccardSimilarity import *
 
+
 def euclidianDistance(vectorOne, vectorTwo):
     if len(vectorOne) != len(vectorTwo):
         raise Exception("Dimension Mismatch")
 
     return math.sqrt(sum([pow(vectorOne[index] - vectorTwo[index], 2) for index in range(len(vectorOne))]))
 
-    
+
 def sexDistance(iOne, iTwo):
     return 0 if iOne.sex == iTwo.sex else 1
-    
+
+
 def gradeDistance(instructorOne, instructorTwo):
     return euclidianDistance(instructorOne.gradevector, instructorTwo.gradevector)
 
+
 def wageDistance(instructorOne, instructorTwo):
     return euclidianDistance(instructorOne.wagevec, instructorTwo.wagevec)
-    
+
+
 def titleDistance(instructorOne, instructorTwo):
     return 1 - jaccardSimilarity(instructorOne.positions, instructorTwo.positions)
+
 
 def printClustering(clusters):
     for cluster in clusters:
@@ -28,7 +33,8 @@ def printClustering(clusters):
             print(instructor.instructorname)
             
         print("\n")
-        
+
+
 def rankSameness(instructors, clusterOne, clusterTwo):
     pairCount = 0
     matchCount = 0
@@ -54,11 +60,13 @@ def rankSameness(instructors, clusterOne, clusterTwo):
 
     totalCount = len(instructors) * len(instructors)
     return pairCount / totalCount, matchCount / totalCount, matchCount / pairCount
-    
+
+
 # double sided rank same
 def rankSamer(instructors, clusterOne, clusterTwo):
     return (rankSame(instructors, clusterOne, clusterTwo) + rankSame(instructors, clusterTwo, clusterOne)) / 2
-   
+
+
 def rankSame(instructors, clusterOne, clusterTwo):
     total = 0
     
@@ -92,8 +100,8 @@ print(clusterTwo)
 print(rankSamer(ints, clusterTwo, clusterOne))
 
  
-#instructors = getInstructorsWithClasses()
+instructors = getInstructorsWithClasses()
 #
-#print("wage x title", rankSame(instructors, kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, titleDistance)))
-#print("wage x grade", rankSame(instructors, kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, gradeDistance)))
-#print("wage x sex", rankSame(instructors, kMeansPP(instructors, 3, wageDistance), kMeansPP(instructors, 2, sexDistance)))
+print("wage x title", rankSame(instructors, kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, titleDistance)))
+print("wage x grade", rankSame(instructors, kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, gradeDistance)))
+print("wage x sex", rankSame(instructors, kMeansPP(instructors, 3, wageDistance), kMeansPP(instructors, 2, sexDistance)))

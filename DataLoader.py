@@ -142,7 +142,7 @@ class Instructor:
         return not self.__eq__(other)
 
     def __hash__(self):
-          return hash(self.instructorname)
+        return hash(self.instructorname)
 
     def getpositions(self, title):
         return title.split(" AND ")
