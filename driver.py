@@ -1,5 +1,6 @@
 from DataLoader import *
 from kMeansPP import *
+from jaccardSimilarity import *
 
 def euclidianDistance(vectorOne, vectorTwo):
     if len(vectorOne) != len(vectorTwo):
@@ -14,12 +15,18 @@ def sexDistance(iOne, iTwo):
 def gradeDistance(instructorOne, instructorTwo):
     return euclidianDistance(instructorOne.gradevector, instructorTwo.gradevector)
 
+def wageDistance(instructorOne, instructorTwo):
+    return euclidianDistance(instructorOne.wagevec, instructorTwo.wagevec)
+    
+def titleDistance(instructorOne, instructorTwo):
+    return 1 - jaccardSimilarity(instructorOne.positions, instructorTwo.positions)
+    
 instructors = getInstructorsWithClasses()
-clusters = kMeansPP(instructors, 5, gradeDistance)
+clusters = kMeansPP(instructors, 20, wageDistance)
 
 for cluster in clusters:
     print(len(cluster))
     for instructor in cluster:
-        print(instructor.instructorname, instructor.gradevector)
+        print(instructor.instructorname, instructor.wagevec)
         
     print("\n")
