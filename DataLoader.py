@@ -30,13 +30,11 @@ def getallinstructors():
 
 def getInstructorsWithClasses():
     toreturn = getallinstructors()
-
-
+    
     #fill vectors
-
-    for toadd in getallclasses():
+    for toadd in getallclasses().values():
         for instructor in toreturn:
-            if instructor.instructorname in toadd.instructors:
+            if instructor.instructorname.upper() in toadd.instructors:
                 instructor.gradevector[0] += toadd.a
                 instructor.gradevector[1] += toadd.b
                 instructor.gradevector[2] += toadd.c
@@ -52,6 +50,9 @@ def getInstructorsWithClasses():
             magnitude += pow(g, 2)
         magnitude = math.sqrt(magnitude)
 
+        if magnitude == 0:
+            continue
+            
         for index in range(0, len(instructor.gradevector)):
             instructor.gradevector[index] = instructor.gradevector[index] / magnitude
 
@@ -132,7 +133,16 @@ class Instructor:
         self.researchtext = researchinterests
         self.classes = []
 
-        self.gradevector = []
+        self.gradevector = [0, 0, 0, 0, 0, 0, 0]
+        
+    def __eq__(self, other):
+        return self.instructorname == other.instructorname
+
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    def __hash__(self):
+          return hash(self.instructorname)
 
     def getpositions(self, title):
         return title.split(" AND ")
