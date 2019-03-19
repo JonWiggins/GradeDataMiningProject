@@ -1,4 +1,5 @@
 import re
+import math
 
 
 def getallclasses():
@@ -24,6 +25,36 @@ def getallinstructors():
             # 1. Last 2. First 3. Intname 4. Title 5. Gender 6. Salary 7. Benifits 8. Leave 9. Intrests
             toreturn.append(Instructor(match.group(2), match.group(1), match.group(3), match.group(4), match.group(5),
                                        match.group(6), match.group(7), match.group(8), match.group(9)))
+    return toreturn
+
+
+def getInstructorsWithClasses():
+    toreturn = getallinstructors()
+
+
+    #fill vectors
+
+    for toadd in getallclasses():
+        for instructor in toreturn:
+            if instructor.instructorname in toadd.instructors:
+                instructor.gradevector[0] += toadd.a
+                instructor.gradevector[1] += toadd.b
+                instructor.gradevector[2] += toadd.c
+                instructor.gradevector[3] += toadd.d
+                instructor.gradevector[4] += toadd.e
+                instructor.gradevector[5] += toadd.w
+                instructor.gradevector[6] += toadd.other
+
+    # make them into unit vectors
+    for instructor in toreturn:
+        magnitude = 0
+        for g in instructor.gradevector:
+            magnitude += pow(g, 2)
+        magnitude = math.sqrt(magnitude)
+
+        for index in range(0, len(instructor.gradevector)):
+            instructor.gradevector[index] = instructor.gradevector[index] / magnitude
+
     return toreturn
 
 
@@ -88,14 +119,20 @@ class Instructor:
         self.first = first
         self.last = last
         self.instructorname = intname
-        self.positions = self.getpositions(title)
+        self.positions = set(self.getpositions(title))
         self.sex = sex
+
         self.salary = int(salary.replace("\"", "").replace("\'", "").replace(",", ""))
         self.benifits = int(benifits.replace("\"", "").replace("\'", "").replace(",", ""))
         self.leave = int(leave.replace("\"", "").replace("\'", "").replace(",", ""))
+
+        self.wagevec = [self.salary, self.benifits, self.leave]
+
         self.pay = self.salary + self.benifits + self.leave
         self.researchtext = researchinterests
         self.classes = []
+
+        self.gradevector = []
 
     def getpositions(self, title):
         return title.split(" AND ")
