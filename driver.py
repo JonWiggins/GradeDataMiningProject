@@ -63,11 +63,11 @@ def rankSameness(instructors, clusterOne, clusterTwo):
 
 
 # double sided rank same
-def rankSamer(instructors, clusterOne, clusterTwo):
-    return (rankSame(instructors, clusterOne, clusterTwo) + rankSame(instructors, clusterTwo, clusterOne)) / 2
+def rankSamer(clusterOne, clusterTwo):
+    return (rankSame(clusterOne, clusterTwo) + rankSame(clusterTwo, clusterOne)) / 2
 
 
-def rankSame(instructors, clusterOne, clusterTwo):
+def rankSame(clusterOne, clusterTwo):
     total = 0
     
     for cluster in clusterOne:
@@ -87,8 +87,31 @@ def rankSame(instructors, clusterOne, clusterTwo):
             total += max([value for value in matches.values()]) / len(cluster)
         
     return total / len(clusterOne)
-                    
-        
+
+
+def jshat(clustering1, clustering2):
+    similaratities = []
+
+    if len(clustering1) > len(clustering2):
+        for cluster1 in clustering1:
+            max = 0
+            for cluster2 in clustering2:
+                js = jaccardSimilarity(cluster1, cluster2)
+                if js > max:
+                    max = js
+            similaratities.append(max)
+    else:
+        for cluster1 in clustering2:
+            max = 0
+            for cluster2 in clustering1:
+                js = jaccardSimilarity(cluster1, cluster2)
+                if js > max:
+                    max = js
+            similaratities.append(max)
+
+    # return sum(similaratities) / len(similaratities)
+    return similaratities
+
 
 ints = [-2, -3, -4, 10, 12]
 clusterOne = kMeansPP(ints, 2, lambda l, r: abs(l - r))
@@ -97,11 +120,26 @@ clusterTwo = kMeansPP(ints, 2, lambda l, r: abs(l / abs(l) - r / abs(r)))
 print(clusterOne)
 print(clusterTwo)
 
-print(rankSamer(ints, clusterTwo, clusterOne))
+print(rankSamer(clusterTwo, clusterOne))
 
  
 instructors = getInstructorsWithClasses()
 #
-print("wage x title", rankSame(instructors, kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, titleDistance)))
-print("wage x grade", rankSame(instructors, kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, gradeDistance)))
-print("wage x sex", rankSame(instructors, kMeansPP(instructors, 3, wageDistance), kMeansPP(instructors, 2, sexDistance)))
+print("grade x sex", jshat(kMeansPP(instructors, 5, gradeDistance), kMeansPP(instructors, 2, sexDistance)))
+print("title x sex", jshat(kMeansPP(instructors, 5, titleDistance), kMeansPP(instructors, 2, sexDistance)))
+print("title x grade", jshat(kMeansPP(instructors, 5, titleDistance), kMeansPP(instructors, 5, gradeDistance)))
+print("wage x title", jshat(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, titleDistance)))
+print("wage x grade", jshat(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, gradeDistance)))
+print("wage x sex", jshat(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 2, sexDistance)))
+
+print("")
+
+print("grade x sex", rankSamer(kMeansPP(instructors, 5, gradeDistance), kMeansPP(instructors, 2, sexDistance)))
+print("title x sex", rankSamer(kMeansPP(instructors, 5, titleDistance), kMeansPP(instructors, 2, sexDistance)))
+print("title x grade", rankSamer(kMeansPP(instructors, 5, titleDistance), kMeansPP(instructors, 5, gradeDistance)))
+print("wage x title", rankSamer(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, titleDistance)))
+print("wage x grade", rankSamer(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, gradeDistance)))
+print("wage x sex", rankSamer(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 2, sexDistance)))
+
+print("")
+
