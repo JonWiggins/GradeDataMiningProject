@@ -1,5 +1,6 @@
 import re
 import math
+import numpy as np
 
 
 def getallclasses():
@@ -23,6 +24,7 @@ def getallinstructors():
         match = re.match(regex, line)
         if match:
             # 1. Last 2. First 3. Intname 4. Title 5. Gender 6. Salary 7. Benifits 8. Leave 9. Intrests
+            print(match.group(3))
             toreturn.append(Instructor(match.group(2), match.group(1), match.group(3), match.group(4), match.group(5),
                                        match.group(6), match.group(7), match.group(8), match.group(9)))
     return toreturn
@@ -31,9 +33,10 @@ def getallinstructors():
 def getInstructorsWithClasses():
     toreturn = getallinstructors()
     
-    #fill vectors
+    # fill vectors
     for toadd in getallclasses().values():
         for instructor in toreturn:
+            # print(instructor.instructorname)
             if instructor.instructorname.upper() in toadd.instructors:
                 instructor.gradevector[0] += toadd.a
                 instructor.gradevector[1] += toadd.b
@@ -43,18 +46,19 @@ def getInstructorsWithClasses():
                 instructor.gradevector[5] += toadd.w
                 instructor.gradevector[6] += toadd.other
 
-    # make them into unit vectors
+    # Create l1 and l2 norm vecs
     for instructor in toreturn:
-        magnitude = 0
-        for g in instructor.gradevector:
-            magnitude += pow(g, 2)
-        magnitude = math.sqrt(magnitude)
-
-        if magnitude == 0:
+        total = sum(instructor.gradevector)
+        if total == 0:
+            instructor.l1gradevector = [0, 0, 0, 0, 0, 0, 0]
+            instructor.l2gradevector = [0, 0, 0, 0, 0, 0, 0]
             continue
-            
-        for index in range(0, len(instructor.gradevector)):
-            instructor.gradevector[index] = instructor.gradevector[index] / magnitude
+
+        instructor.l1gradevector = [x / total for x in instructor.gradevector]
+        magnitude = sum(pow(x, 2) for x in instructor.gradevector)
+        magnitude = np.sqrt(magnitude)
+
+        instructor.l2gradevector = [x / magnitude for x in instructor.gradevector]
 
     return toreturn
 
@@ -101,7 +105,7 @@ class Class:
         self.number = number
         self.semester = semester
         self.section = section
-        self.instructors = self.getinstructors(instructors)
+        self.instructors = set(instructors.split(" AND "))
         self.a = 0
         self.b = 0
         self.c = 0
@@ -110,9 +114,6 @@ class Class:
         self.w = 0
         self.other = 0
 
-    def getinstructors(self, instructors):
-        return instructors.split(" AND ")
-
 
 class Instructor:
 
@@ -120,7 +121,7 @@ class Instructor:
         self.first = first
         self.last = last
         self.instructorname = intname
-        self.positions = set(self.getpositions(title))
+        self.positions = set(title.split(" AND "))
         self.sex = sex
 
         self.salary = int(salary.replace("\"", "").replace("\'", "").replace(",", ""))
@@ -134,6 +135,8 @@ class Instructor:
         self.classes = []
 
         self.gradevector = [0, 0, 0, 0, 0, 0, 0]
+        self.l1gradevector = []
+        self.l2gradevector = []
         
     def __eq__(self, other):
         return self.instructorname == other.instructorname
@@ -144,5 +147,4 @@ class Instructor:
     def __hash__(self):
         return hash(self.instructorname)
 
-    def getpositions(self, title):
-        return title.split(" AND ")
+
