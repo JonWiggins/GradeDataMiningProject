@@ -109,37 +109,68 @@ def jshat(clustering1, clustering2):
                     max = js
             similaratities.append(max)
 
-    # return sum(similaratities) / len(similaratities)
-    return similaratities
+    return sum(similaratities) / len(similaratities)
+    # return similaratities
 
 
-ints = [-2, -3, -4, 10, 12]
-clusterOne = kMeansPP(ints, 2, lambda l, r: abs(l - r))
-clusterTwo = kMeansPP(ints, 2, lambda l, r: abs(l / abs(l) - r / abs(r)))
+def purity(clustering1, clustering2):
+    summation = 0
 
-print(clusterOne)
-print(clusterTwo)
+    # TODO investigate looping c1 vs c2
+    for cluster in clustering1:
+        highest = 0
+        for comparer in clustering2:
+            next = len(cluster.intersection(comparer))
+            if next > highest:
+                highest = next
 
-print(rankSamer(clusterTwo, clusterOne))
+        summation += highest
 
- 
-instructors = getInstructorsWithClasses()
-#
-print("grade x sex", jshat(kMeansPP(instructors, 5, gradeDistance), kMeansPP(instructors, 2, sexDistance)))
-print("title x sex", jshat(kMeansPP(instructors, 5, titleDistance), kMeansPP(instructors, 2, sexDistance)))
-print("title x grade", jshat(kMeansPP(instructors, 5, titleDistance), kMeansPP(instructors, 5, gradeDistance)))
-print("wage x title", jshat(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, titleDistance)))
-print("wage x grade", jshat(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, gradeDistance)))
-print("wage x sex", jshat(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 2, sexDistance)))
+    # find total number of data points
+    N = sum(len(cluster) for cluster in clustering1)
 
-print("")
+    return summation / N
 
-print("grade x sex", rankSamer(kMeansPP(instructors, 5, gradeDistance), kMeansPP(instructors, 2, sexDistance)))
-print("title x sex", rankSamer(kMeansPP(instructors, 5, titleDistance), kMeansPP(instructors, 2, sexDistance)))
-print("title x grade", rankSamer(kMeansPP(instructors, 5, titleDistance), kMeansPP(instructors, 5, gradeDistance)))
-print("wage x title", rankSamer(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, titleDistance)))
-print("wage x grade", rankSamer(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 5, gradeDistance)))
-print("wage x sex", rankSamer(kMeansPP(instructors, 5, wageDistance), kMeansPP(instructors, 2, sexDistance)))
 
-print("")
+def fowlkesmallowsindex(clustering1, clustering2):
+    return 0
+
+
+def testclusterings(minsize, maxsize):
+    print("Cluster1 Metric\tCluster1 Size\tCluster2 Metric\tCluster2 Size\tJSHat\tPurity\tFowlkes-Mallows Index")
+    instructors = getInstructorsWithClasses()
+
+    for size in range(minsize, maxsize):
+        gradeclusters = kMeansPP(instructors, size, gradeDistance)
+        genderclusters = kMeansPP(instructors, 2, sexDistance)  # There are only two genders?
+        titleclusters = kMeansPP(instructors, size, titleDistance)
+        wageclusters = kMeansPP(instructors, size, wageDistance)
+
+        print("Gender\t", 2, "\tGrade\t", size, "\t",
+              jshat(genderclusters, gradeclusters), "\t", purity(genderclusters, gradeclusters),
+              "\t", fowlkesmallowsindex(genderclusters, gradeclusters))
+
+        print("Gender\t", 2, "\tTitle\t", size, "\t",
+              jshat(genderclusters, titleclusters), "\t", purity(genderclusters, titleclusters),
+              "\t", fowlkesmallowsindex(genderclusters, titleclusters))
+
+        print("Gender\t", 2, "\tWage\t", size, "\t",
+              jshat(genderclusters, wageclusters), "\t", purity(genderclusters, wageclusters),
+              "\t", fowlkesmallowsindex(genderclusters, wageclusters))
+
+        print("Grade\t", size, "\tTitle\t", size, "\t",
+              jshat(gradeclusters, titleclusters), "\t", purity(gradeclusters, titleclusters),
+              "\t", fowlkesmallowsindex(gradeclusters, titleclusters))
+
+        print("Grade\t", size, "\tWage\t", size, "\t",
+              jshat(gradeclusters, wageclusters), "\t", purity(gradeclusters, wageclusters),
+              "\t", fowlkesmallowsindex(gradeclusters, wageclusters))
+
+        print("Wage\t", size, "\tTitle\t", size, "\t",
+              jshat(wageclusters, titleclusters), "\t", purity(wageclusters, titleclusters),
+              "\t", fowlkesmallowsindex(wageclusters, titleclusters))
+
+
+testclusterings(2, 8)
+
 
