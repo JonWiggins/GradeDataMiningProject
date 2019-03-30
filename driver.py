@@ -174,7 +174,7 @@ def fowlkesmallowsindex(clustering1, clustering2, instructors):
 
     if TP + FP == 0 or TP + FN == 0:
         return 0
-    
+
     fpterm = TP / (TP + FP)
     fnterm = TP / (TP + FN)
 

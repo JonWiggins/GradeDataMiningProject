@@ -101,7 +101,7 @@ def printpremilresults():
         print(instructor.instructorname, "\t", val, "\t", instructor.l1gradevector)
 
 
-def generdergapfinder():
+def gendergapfinder():
     instructors = getInstructorsWithClasses()
     maletotal = 0
     malecount = 0
@@ -124,11 +124,41 @@ def generdergapfinder():
     avgfemalegrade = [x / sum(femalegrades) for x in femalegrades]
 
     print("L1 Normalized grade vector for males: ", avgmalegrade)
-    print("L2 Normalized grade vector for females: ", avgfemalegrade)
+    print("L1 Normalized grade vector for females: ", avgfemalegrade)
 
     maleGPA = (avgmalegrade[0] * 4) + (avgmalegrade[1] * 3) + (avgmalegrade[2] * 2) + (avgmalegrade[3] * 1)
     femaleGPA = (avgfemalegrade[0] * 4) + (avgfemalegrade[1] * 3) + (avgfemalegrade[2] * 2) + (avgfemalegrade[3] * 1)
     print("Average GPA for Females: ", femaleGPA, " Average GPA for Males: ", maleGPA)
+
+
+def titlegapfinder():
+    instructors = getInstructorsWithClasses()
+    titles = {}
+    # title - > (sumwage, sumgradevec, malecount, femalecount)
+    for instructor in instructors:
+        for title in instructor.positions:
+            if title in titles:
+                titles[title].wage += instructor.pay
+                titles[title].gradevec = [sum(x) for x in zip(instructor.gradevector, titles[title].gradevec)]
+
+            else:
+                toadd = CumulativeTitle(instructor.pay, instructor.gradevector, 0, 0)
+                titles[title] = toadd
+
+            if instructor.sex == "Male":
+                titles[title].malecount += 1
+            else:
+                titles[title].femalecount += 1
+
+    print("Title\tAverage Pay\tMales\tFemales\tGPA\tL1 Grade Vector")
+
+    for (title, values) in titles.items():
+        l1vec = [0] * 7
+        if not sum(values.gradevec) == 0:
+            l1vec = [x / sum(values.gradevec) for x in values.gradevec]
+        GPA = (l1vec[0] * 4) + (l1vec[1] * 3) + (l1vec[2] * 2) + (l1vec[3] * 1)
+        print(title, "\t", values.wage / (values.malecount + values.femalecount), "\t", values.malecount, "\t",
+              values.femalecount, "\t", GPA, "\t", l1vec)
 
 
 class CumulativeClass:
@@ -147,5 +177,14 @@ class CumulativeClass:
         self.l2 = []
 
 
-generdergapfinder()
+class CumulativeTitle:
+    def __init__(self, wage, gradevec, malecount, femalecount):
+        self.wage = wage
+        self.gradevec = gradevec
+        self.malecount = malecount
+        self.femalecount = femalecount
+
+
+# gendergapfinder()
+titlegapfinder()
 
