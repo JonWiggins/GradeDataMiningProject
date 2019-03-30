@@ -1,5 +1,6 @@
 import math, random
 
+
 # Gets the center associated with the given metric, using the given distance function.
 def getCenter(centers, metric, distanceFunction):
     minDistance = distanceFunction(metric, centers[0])
@@ -12,10 +13,12 @@ def getCenter(centers, metric, distanceFunction):
             minCenter = center
 
     return minCenter
-    
+
+
 # Gets the distance to the center associated with the given metric, using the given distance function
 def distanceToCenter(centers, metric, distanceFunction):
     return distanceFunction(metric, getCenter(centers, metric, distanceFunction))
+
 
 def centersToSets(centers, metrics, distanceFunction):
     sets = []
@@ -30,7 +33,8 @@ def centersToSets(centers, metrics, distanceFunction):
         sets.append(subset)
 
     return sets
-    
+
+
 def kMeansPP(metrics, centerCount, distanceFunction):
     centers = [metrics[0]]
 

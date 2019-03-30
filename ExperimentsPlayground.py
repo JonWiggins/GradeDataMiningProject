@@ -101,22 +101,34 @@ def printpremilresults():
         print(instructor.instructorname, "\t", val, "\t", instructor.l1gradevector)
 
 
-def wagegapfinder():
-    instructors = getallinstructors()
+def generdergapfinder():
+    instructors = getInstructorsWithClasses()
     maletotal = 0
     malecount = 0
     femaletotal = 0
     femalecount = 0
-
+    malegrades = [0] * 7
+    femalegrades = [0] * 7
     for instructor in instructors:
         if instructor.sex == "Male":
             malecount += 1
             maletotal += instructor.pay
+            malegrades = [sum(x) for x in zip(malegrades, instructor.gradevector)]
         else:
             femalecount += 1
             femaletotal += instructor.pay
+            femalegrades = [sum(x) for x in zip(femalegrades, instructor.gradevector)]
 
     print("Male Average Pay: " + str(maletotal / malecount) + " Female Average Pay: " + str(femaletotal / femalecount))
+    avgmalegrade = [x / sum(malegrades) for x in malegrades]
+    avgfemalegrade = [x / sum(femalegrades) for x in femalegrades]
+
+    print("L1 Normalized grade vector for males: ", avgmalegrade)
+    print("L2 Normalized grade vector for females: ", avgfemalegrade)
+
+    maleGPA = (avgmalegrade[0] * 4) + (avgmalegrade[1] * 3) + (avgmalegrade[2] * 2) + (avgmalegrade[3] * 1)
+    femaleGPA = (avgfemalegrade[0] * 4) + (avgfemalegrade[1] * 3) + (avgfemalegrade[2] * 2) + (avgfemalegrade[3] * 1)
+    print("Average GPA for Females: ", femaleGPA, " Average GPA for Males: ", maleGPA)
 
 
 class CumulativeClass:
@@ -135,4 +147,5 @@ class CumulativeClass:
         self.l2 = []
 
 
-printpremilresults()
+generdergapfinder()
+

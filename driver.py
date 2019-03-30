@@ -132,8 +132,55 @@ def purity(clustering1, clustering2):
     return summation / N
 
 
-def fowlkesmallowsindex(clustering1, clustering2):
-    return 0
+def fowlkesmallowsindex(clustering1, clustering2, instructors):
+    # TP = the number of points that are present in the same cluster in both clusterings
+    # FP = the number of points that are present in the same cluster in clustering1 but not clustering2
+    # FN = the number of points that are present in the same cluster in clustering2 but not clustering1
+    # TN = the number of points that are in different clusters in both clusterings
+    TP = 0
+    FP = 0
+    FN = 0
+    TN = 0
+
+    for firstinstructor in instructors:
+        firstinstructorclusterone = None
+        for cluster in clustering1:
+            if firstinstructor in cluster:
+                firstinstructorclusterone = cluster
+
+        firstinstructorclustertwo = None
+        for cluster in clustering2:
+            if firstinstructor in cluster:
+                firstinstructorclustertwo = cluster
+
+        for secondinstructor in instructors:
+            secondinstructorclusterone = None
+            for cluster in clustering1:
+                if secondinstructor in cluster:
+                    secondinstructorclusterone = cluster
+            secondinstructorclustertwo = None
+            for cluster in clustering2:
+                if secondinstructor in cluster:
+                    secondinstructorclustertwo = cluster
+
+            if firstinstructorclusterone == secondinstructorclusterone and firstinstructorclustertwo == secondinstructorclustertwo:
+                TP += 1
+            elif firstinstructorclusterone == secondinstructorclusterone and not firstinstructorclustertwo == secondinstructorclustertwo:
+                FP += 1
+            elif not firstinstructorclusterone == secondinstructorclusterone and firstinstructorclustertwo == secondinstructorclustertwo:
+                FN += 1
+            elif not firstinstructorclusterone == secondinstructorclusterone and not firstinstructorclustertwo == secondinstructorclustertwo:
+                TN += 1
+
+    if TP + FP == 0 or TP + FN == 0:
+        return 0
+    
+    fpterm = TP / (TP + FP)
+    fnterm = TP / (TP + FN)
+
+    FM = np.sqrt(fpterm * fnterm)
+
+    return FM
 
 
 def testclusterings(minsize, maxsize):
@@ -148,27 +195,27 @@ def testclusterings(minsize, maxsize):
 
         print("Gender\t", 2, "\tGrade\t", size, "\t",
               jshat(genderclusters, gradeclusters), "\t", purity(genderclusters, gradeclusters),
-              "\t", fowlkesmallowsindex(genderclusters, gradeclusters))
+              "\t", fowlkesmallowsindex(genderclusters, gradeclusters, instructors))
 
         print("Gender\t", 2, "\tTitle\t", size, "\t",
               jshat(genderclusters, titleclusters), "\t", purity(genderclusters, titleclusters),
-              "\t", fowlkesmallowsindex(genderclusters, titleclusters))
+              "\t", fowlkesmallowsindex(genderclusters, titleclusters, instructors))
 
         print("Gender\t", 2, "\tWage\t", size, "\t",
               jshat(genderclusters, wageclusters), "\t", purity(genderclusters, wageclusters),
-              "\t", fowlkesmallowsindex(genderclusters, wageclusters))
+              "\t", fowlkesmallowsindex(genderclusters, wageclusters, instructors))
 
         print("Grade\t", size, "\tTitle\t", size, "\t",
               jshat(gradeclusters, titleclusters), "\t", purity(gradeclusters, titleclusters),
-              "\t", fowlkesmallowsindex(gradeclusters, titleclusters))
+              "\t", fowlkesmallowsindex(gradeclusters, titleclusters, instructors))
 
         print("Grade\t", size, "\tWage\t", size, "\t",
               jshat(gradeclusters, wageclusters), "\t", purity(gradeclusters, wageclusters),
-              "\t", fowlkesmallowsindex(gradeclusters, wageclusters))
+              "\t", fowlkesmallowsindex(gradeclusters, wageclusters, instructors))
 
         print("Wage\t", size, "\tTitle\t", size, "\t",
               jshat(wageclusters, titleclusters), "\t", purity(wageclusters, titleclusters),
-              "\t", fowlkesmallowsindex(wageclusters, titleclusters))
+              "\t", fowlkesmallowsindex(wageclusters, titleclusters, instructors))
 
 
 testclusterings(2, 8)

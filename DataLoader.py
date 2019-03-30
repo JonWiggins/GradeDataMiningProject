@@ -24,7 +24,7 @@ def getallinstructors():
         match = re.match(regex, line)
         if match:
             # 1. Last 2. First 3. Intname 4. Title 5. Gender 6. Salary 7. Benifits 8. Leave 9. Intrests
-            print(match.group(3))
+            # print(match.group(3))
             toreturn.append(Instructor(match.group(2), match.group(1), match.group(3), match.group(4), match.group(5),
                                        match.group(6), match.group(7), match.group(8), match.group(9)))
     return toreturn
