@@ -8,7 +8,7 @@ def getCenter(centers, metric, distanceFunction):
 
     for center in centers[1:]:
         distance = distanceFunction(metric, center)
-        if(distance < minDistance):
+        if distance < minDistance:
             minDistance = distance
             minCenter = center
 
@@ -57,3 +57,19 @@ def kMeansPP(metrics, centerCount, distanceFunction):
                 break
 
     return centersToSets(centers, metrics, distanceFunction)
+
+
+# TODO implement
+def gonzales(metrics, centerCount, distanceFunction):
+    return set()
+
+
+# TODO implement
+def lloyds(metrics, centerCount, distanceFunction):
+    return set()
+
+
+# TODO implement
+def meanlink(metrics, centerCount, distanceFunction):
+    return set()
+

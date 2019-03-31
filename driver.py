@@ -1,5 +1,5 @@
 from DataLoader import *
-from kMeansPP import *
+from Clustering import *
 from jaccardSimilarity import *
 
 
@@ -113,6 +113,9 @@ def jshat(clustering1, clustering2):
                     max = js
             similaratities.append(max)
 
+    if len(similaratities) == 0:
+        return 0
+
     return sum(similaratities) / len(similaratities)
     # return similaratities
 
@@ -132,6 +135,9 @@ def purity(clustering1, clustering2):
 
     # find total number of data points
     N = sum(len(cluster) for cluster in clustering1)
+
+    if N == 0:
+        return 0
 
     return summation / N
 
@@ -191,16 +197,17 @@ def fowlkesmallowsindex(clustering1, clustering2, instructors):
     return FM
 
 
-def testclusterings(minsize, maxsize):
+def testclusterings(clustername, clustermethod, minsize, maxsize):
+    print(clustername)
     print("Cluster1 Metric\tCluster1 Size\tCluster2 Metric\tCluster2 Size\tJSHat\tPurity\tFowlkes-Mallows Index")
     instructors = getInstructorsWithClasses()
 
     for size in range(minsize, maxsize):
-        gradeclusters = kMeansPP(instructors, size, gradeDistance)
-        genderclusters = kMeansPP(instructors, 2, sexDistance)  # There are only two genders?
-        titleclusters = kMeansPP(instructors, size, titleDistance)
-        wageclusters = kMeansPP(instructors, size, wageDistance)
-        researchclusters = kMeansPP(instructors, size, researchDistance)
+        gradeclusters = clustermethod(instructors, size, gradeDistance)
+        genderclusters = clustermethod(instructors, 2, sexDistance)  # There are only two genders?
+        titleclusters = clustermethod(instructors, size, titleDistance)
+        wageclusters = clustermethod(instructors, size, wageDistance)
+        researchclusters = clustermethod(instructors, size, researchDistance)
 
         print("Gender\t", 2, "\tGrade\t", size, "\t",
               jshat(genderclusters, gradeclusters), "\t", purity(genderclusters, gradeclusters),
@@ -243,6 +250,13 @@ def testclusterings(minsize, maxsize):
               "\t", fowlkesmallowsindex(researchclusters, wageclusters, instructors))
 
 
-testclusterings(2, 6)
+def drive(minsize, maxsize):
+    testclusterings("kmeansPP", kMeansPP, minsize, maxsize)
+    testclusterings("Gonzales", gonzales, minsize, maxsize)
+    testclusterings("Lloyds", lloyds, minsize, maxsize)
+    testclusterings("Mean Link", meanlink, minsize, maxsize)
+
+
+drive(2, 6)
 
 
