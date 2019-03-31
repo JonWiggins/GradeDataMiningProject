@@ -10,8 +10,8 @@ def euclidianDistance(vectorOne, vectorTwo):
     return math.sqrt(sum([pow(vectorOne[index] - vectorTwo[index], 2) for index in range(len(vectorOne))]))
 
 
-def sexDistance(iOne, iTwo):
-    return 0 if iOne.sex == iTwo.sex else 1
+def sexDistance(instructorOne, instructorTwo):
+    return 0 if instructorOne.sex == instructorTwo.sex else 1
 
 
 def gradeDistance(instructorOne, instructorTwo):
@@ -24,6 +24,10 @@ def wageDistance(instructorOne, instructorTwo):
 
 def titleDistance(instructorOne, instructorTwo):
     return 1 - jaccardSimilarity(instructorOne.positions, instructorTwo.positions)
+
+
+def researchDistance(instructorOne, instructorTwo):
+    return 1 - jaccardSimilarity(instructorOne.researchkgram, instructorTwo.researchkgram)
 
 
 def printClustering(clusters):
@@ -163,13 +167,17 @@ def fowlkesmallowsindex(clustering1, clustering2, instructors):
                 if secondinstructor in cluster:
                     secondinstructorclustertwo = cluster
 
-            if firstinstructorclusterone == secondinstructorclusterone and firstinstructorclustertwo == secondinstructorclustertwo:
+            if firstinstructorclusterone == secondinstructorclusterone \
+                    and firstinstructorclustertwo == secondinstructorclustertwo:
                 TP += 1
-            elif firstinstructorclusterone == secondinstructorclusterone and not firstinstructorclustertwo == secondinstructorclustertwo:
+            elif firstinstructorclusterone == secondinstructorclusterone \
+                    and not firstinstructorclustertwo == secondinstructorclustertwo:
                 FP += 1
-            elif not firstinstructorclusterone == secondinstructorclusterone and firstinstructorclustertwo == secondinstructorclustertwo:
+            elif not firstinstructorclusterone == secondinstructorclusterone \
+                    and firstinstructorclustertwo == secondinstructorclustertwo:
                 FN += 1
-            elif not firstinstructorclusterone == secondinstructorclusterone and not firstinstructorclustertwo == secondinstructorclustertwo:
+            elif not firstinstructorclusterone == secondinstructorclusterone \
+                    and not firstinstructorclustertwo == secondinstructorclustertwo:
                 TN += 1
 
     if TP + FP == 0 or TP + FN == 0:
@@ -192,6 +200,7 @@ def testclusterings(minsize, maxsize):
         genderclusters = kMeansPP(instructors, 2, sexDistance)  # There are only two genders?
         titleclusters = kMeansPP(instructors, size, titleDistance)
         wageclusters = kMeansPP(instructors, size, wageDistance)
+        researchclusters = kMeansPP(instructors, size, researchDistance)
 
         print("Gender\t", 2, "\tGrade\t", size, "\t",
               jshat(genderclusters, gradeclusters), "\t", purity(genderclusters, gradeclusters),
@@ -217,7 +226,23 @@ def testclusterings(minsize, maxsize):
               jshat(wageclusters, titleclusters), "\t", purity(wageclusters, titleclusters),
               "\t", fowlkesmallowsindex(wageclusters, titleclusters, instructors))
 
+        print("Research\t", size, "\tGender\t", 2, "\t",
+              jshat(researchclusters, genderclusters), "\t", purity(researchclusters, genderclusters),
+              "\t", fowlkesmallowsindex(researchclusters, genderclusters, instructors))
 
-testclusterings(2, 8)
+        print("Research\t", size, "\tGrade\t", size, "\t",
+              jshat(researchclusters, gradeclusters), "\t", purity(researchclusters, gradeclusters),
+              "\t", fowlkesmallowsindex(researchclusters, gradeclusters, instructors))
+
+        print("Research\t", size, "\tTitle\t", size, "\t",
+              jshat(researchclusters, titleclusters), "\t", purity(researchclusters, titleclusters),
+              "\t", fowlkesmallowsindex(researchclusters, titleclusters, instructors))
+
+        print("Research\t", size, "\tWage\t", size, "\t",
+              jshat(researchclusters, wageclusters), "\t", purity(researchclusters, wageclusters),
+              "\t", fowlkesmallowsindex(researchclusters, wageclusters, instructors))
+
+
+testclusterings(2, 6)
 
 

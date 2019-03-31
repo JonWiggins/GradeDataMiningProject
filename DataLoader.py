@@ -98,6 +98,11 @@ def readinclassfile(filename):
     return toreturn
 
 
+# TODO implement this
+def kgrams(string, size):
+    return set()
+
+
 class Class:
     # ^ XD
 
@@ -132,6 +137,9 @@ class Instructor:
 
         self.pay = self.salary + self.benifits + self.leave
         self.researchtext = researchinterests
+
+        self.researchkgram = kgrams(self.researchtext, 3)
+
         self.classes = []
 
         self.gradevector = [0, 0, 0, 0, 0, 0, 0]

@@ -109,6 +109,7 @@ def gendergapfinder():
     femalecount = 0
     malegrades = [0] * 7
     femalegrades = [0] * 7
+
     for instructor in instructors:
         if instructor.sex == "Male":
             malecount += 1
@@ -119,22 +120,21 @@ def gendergapfinder():
             femaletotal += instructor.pay
             femalegrades = [sum(x) for x in zip(femalegrades, instructor.gradevector)]
 
-    print("Male Average Pay: " + str(maletotal / malecount) + " Female Average Pay: " + str(femaletotal / femalecount))
+    print("Gender\tCount\tAverage Pay\tGPA\tL1 Grave Vector")
     avgmalegrade = [x / sum(malegrades) for x in malegrades]
     avgfemalegrade = [x / sum(femalegrades) for x in femalegrades]
 
-    print("L1 Normalized grade vector for males: ", avgmalegrade)
-    print("L1 Normalized grade vector for females: ", avgfemalegrade)
-
     maleGPA = (avgmalegrade[0] * 4) + (avgmalegrade[1] * 3) + (avgmalegrade[2] * 2) + (avgmalegrade[3] * 1)
     femaleGPA = (avgfemalegrade[0] * 4) + (avgfemalegrade[1] * 3) + (avgfemalegrade[2] * 2) + (avgfemalegrade[3] * 1)
-    print("Average GPA for Females: ", femaleGPA, " Average GPA for Males: ", maleGPA)
+
+    print("Male\t", malecount, "\t", maletotal/malecount, "\t", maleGPA, "\t", avgmalegrade)
+    print("Female\t", femalecount, "\t", femaletotal/femalecount, "\t", femaleGPA, "\t", avgfemalegrade)
 
 
 def titlegapfinder():
     instructors = getInstructorsWithClasses()
     titles = {}
-    # title - > (sumwage, sumgradevec, malecount, femalecount)
+
     for instructor in instructors:
         for title in instructor.positions:
             if title in titles:
@@ -185,6 +185,6 @@ class CumulativeTitle:
         self.femalecount = femalecount
 
 
-# gendergapfinder()
-titlegapfinder()
+gendergapfinder()
+# titlegapfinder()
 
