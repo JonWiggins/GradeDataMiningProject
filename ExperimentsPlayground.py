@@ -64,20 +64,20 @@ def cumulativebyinstructor(classes):
     return toreturn
 
 
-def integrateinstructorbyl1(instructors):
+def integrateinstructorbypdf(instructors):
     toreturn = {}
 
     for instructor in instructors:
-        remansum = instructor.l1gradevector[0] * 4
-        remansum += instructor.l1gradevector[1] * 3
-        remansum += instructor.l1gradevector[2] * 2
-        remansum += instructor.l1gradevector[3] * 1
+        remansum = instructor.gradepdf[0] * 4
+        remansum += instructor.gradepdf[1] * 3
+        remansum += instructor.gradepdf[2] * 2
+        remansum += instructor.gradepdf[3] * 1
 
         toreturn[instructor] = remansum
     return toreturn
 
 
-def integrateclassbyl1(cumulativeclass):
+def integrateclassbypdf(cumulativeclass):
     remansum = cumulativeclass.l1[0] * 4
     remansum += cumulativeclass.l1[1] * 3
     remansum += cumulativeclass.l1[2] * 2
@@ -92,13 +92,13 @@ def printpremilresults():
 
     print("CourseNum\tIntegral\tAvgVec")
     for number, vals in classes.items():
-        print(number, "\t", integrateclassbyl1(vals), "\t", vals.l1)
+        print(number, "\t", integrateclassbypdf(vals), "\t", vals.l1)
 
     instrucors = getInstructorsWithClasses()
-    vals = integrateinstructorbyl1(instrucors)
+    vals = integrateinstructorbypdf(instrucors)
     print("Instructor\tIntegral\tAvgVec")
     for instructor, val in vals.items():
-        print(instructor.instructorname, "\t", val, "\t", instructor.l1gradevector)
+        print(instructor.instructorname, "\t", val, "\t", instructor.gradepdf)
 
 
 def gendergapfinder():
@@ -120,7 +120,7 @@ def gendergapfinder():
             femaletotal += instructor.pay
             femalegrades = [sum(x) for x in zip(femalegrades, instructor.gradevector)]
 
-    print("Gender\tCount\tAverage Pay\tGPA\tL1 Grave Vector")
+    print("Gender\tCount\tAverage Pay\tGPA\tGrade PDF")
     avgmalegrade = [x / sum(malegrades) for x in malegrades]
     avgfemalegrade = [x / sum(femalegrades) for x in femalegrades]
 
@@ -150,7 +150,7 @@ def titlegapfinder():
             else:
                 titles[title].femalecount += 1
 
-    print("Title\tAverage Pay\tMales\tFemales\tGPA\tL1 Grade Vector")
+    print("Title\tAverage Pay\tMales\tFemales\tGPA\tGrade PDF")
 
     for (title, values) in titles.items():
         l1vec = [0] * 7
@@ -159,6 +159,18 @@ def titlegapfinder():
         GPA = (l1vec[0] * 4) + (l1vec[1] * 3) + (l1vec[2] * 2) + (l1vec[3] * 1)
         print(title, "\t", values.wage / (values.malecount + values.femalecount), "\t", values.malecount, "\t",
               values.femalecount, "\t", GPA, "\t", l1vec)
+
+
+def phillipsfinder():
+    instructors = getInstructorsWithClasses()
+
+    for instructor in instructors:
+        if instructor.instructorname == "PHILLIPS, J.":
+            print("Cumu", instructor.gradevector)
+            print("L1", instructor.gradepdf)
+            print("L2,", instructor.l2gradevector)
+            print("Courses Taught", instructor.teachinghistory)
+            return
 
 
 class CumulativeClass:
@@ -185,6 +197,17 @@ class CumulativeTitle:
         self.femalecount = femalecount
 
 
+def regressiongatherer():
+    instructors = integrateinstructorbypdf(getInstructorsWithClasses())
+    print("Wage\tGPA")
+    for instructor, gpa in instructors.items():
+        print(instructor.pay, "\t", gpa)
+
+
 gendergapfinder()
 # titlegapfinder()
+
+# phillipsfinder()
+
+# regressiongatherer()
 

@@ -254,7 +254,6 @@ def drive(minsize, maxsize):
     testclusterings("kmeansPP", kMeansPP, minsize, maxsize)
     testclusterings("Gonzales", gonzales, minsize, maxsize)
     testclusterings("Lloyds", lloyds, minsize, maxsize)
-    testclusterings("Mean Link", meanlink, minsize, maxsize)
 
 
 drive(2, 6)

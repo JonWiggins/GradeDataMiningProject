@@ -45,16 +45,17 @@ def getInstructorsWithClasses():
                 instructor.gradevector[4] += toadd.e
                 instructor.gradevector[5] += toadd.w
                 instructor.gradevector[6] += toadd.other
+                instructor.teachinghistory.add("CS"+str(toadd.number)+str(toadd.semester))
 
     # Create l1 and l2 norm vecs
     for instructor in toreturn:
         total = sum(instructor.gradevector)
         if total == 0:
-            instructor.l1gradevector = [0, 0, 0, 0, 0, 0, 0]
+            instructor.gradepdf = [0, 0, 0, 0, 0, 0, 0]
             instructor.l2gradevector = [0, 0, 0, 0, 0, 0, 0]
             continue
 
-        instructor.l1gradevector = [x / total for x in instructor.gradevector]
+        instructor.gradepdf = [x / total for x in instructor.gradevector]
         magnitude = sum(pow(x, 2) for x in instructor.gradevector)
         magnitude = np.sqrt(magnitude)
 
@@ -99,8 +100,12 @@ def readinclassfile(filename):
 
 
 # TODO implement this
-def kgrams(string, size):
-    return set()
+def kgrams(string):
+        input_list = string.split(' ')
+        bigram_list = []
+        for i in range(len(input_list) - 2):
+            bigram_list.append((input_list[i], input_list[i + 1], input_list[i + 2]))
+        return set(bigram_list)
 
 
 class Class:
@@ -138,13 +143,14 @@ class Instructor:
         self.pay = self.salary + self.benifits + self.leave
         self.researchtext = researchinterests
 
-        self.researchkgram = kgrams(self.researchtext, 3)
+        self.researchkgram = kgrams(self.researchtext)
 
         self.classes = []
 
         self.gradevector = [0, 0, 0, 0, 0, 0, 0]
-        self.l1gradevector = []
+        self.gradepdf = []
         self.l2gradevector = []
+        self.teachinghistory = set()
         
     def __eq__(self, other):
         return self.instructorname == other.instructorname

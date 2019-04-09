@@ -69,7 +69,4 @@ def lloyds(metrics, centerCount, distanceFunction):
     return set()
 
 
-# TODO implement
-def meanlink(metrics, centerCount, distanceFunction):
-    return set()
 
