@@ -105,7 +105,7 @@ def printpremilresults():
         pdf = [0] * 6
         if not sum(instructor.feedbackvector) == 0:
             pdf = [x / sum(instructor.feedbackvector) for x in instructor.feedbackvector]
-        mean = sum([x[0] * x[1] for x in zip(pdf, [5, 4, 3, 2, 1, 0])])
+        mean = sum([x[0] * x[1] for x in zip(pdf, [3, 2, 1, -1, -2, -3])])
         print(instructor.instructorname, "\t", round(val, 2), "\t", round(mean, 3), "\t",
               [round(x, 3) for x in instructor.gradepdf], "\t", [round(x, 3) for x in pdf])
 
@@ -237,7 +237,7 @@ def regressiongatherer():
         pdf = [0] * 6
         if not sum(instructor.feedbackvector) == 0:
             pdf = [x / sum(instructor.feedbackvector) for x in instructor.feedbackvector]
-        mean = sum([x[0] * x[1] for x in zip(pdf, [5, 4, 3, 2, 1, 0])])
+        mean = sum([x[0] * x[1] for x in zip(pdf, [3, 2, 1, -1, -2, -3])])
 
         if not gpa == 0.0 and not mean == 0.0:
             print(gpa, "\t", mean)
@@ -246,10 +246,10 @@ def regressiongatherer():
             means.append(mean)
     plt.xlabel("GPA")
     plt.ylabel("Feedback")
-    plt.title("GPA vs Feedback Regression")
-    x = np.arange(2.3, 4.1, .1)
-    y = 2.15 + (x * .4976)
-    plt.plot(x, y)
+    plt.title("GPA and Feedback")
+    # x = np.arange(2.3, 4.1, .1)
+    # y = 2.16 + (x * .5)
+    # plt.plot(x, y)
     plt.show()
 
 
@@ -259,5 +259,5 @@ printpremilresults()
 # titlegapfinder()
 
 # phillipsfinder()
-#regressiongatherer()
+# regressiongatherer()
 
