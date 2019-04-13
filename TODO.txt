@@ -1,0 +1,10 @@
+Mason:
+	Write general Gonzalez algorithm
+	Hierarchical Clustering (single and complete?)
+		     Return data as array of sets
+
+Zak:
+	Determine how to graph a pair of cluster results
+	  Pie charts or graphs?
+	export to excel array of sets
+	Test that cluster analysis works for different cluster sizes

@@ -1,0 +1,8 @@
+from DataLoader import *
+
+
+def sortByGrades():
+    print(getInstructorsWithClasses())
+
+
+sortByGrades()

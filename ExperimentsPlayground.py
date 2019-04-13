@@ -1,6 +1,6 @@
 from DataLoader import *
 import numpy as np
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import statsmodels.api as sm
 
 
@@ -253,7 +253,13 @@ def regressiongatherer():
     plt.show()
 
 
-printpremilresults()
+def sortByGrades():
+    print(getInstructorsWithClasses())
+    
+
+sortByGrades()
+    
+#printpremilresults()
 
 # gendergapfinder()
 # titlegapfinder()

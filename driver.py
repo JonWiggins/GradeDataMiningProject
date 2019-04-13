@@ -1,6 +1,6 @@
 from DataLoader import *
 from Clustering import *
-from jaccardSimilarity import *
+from util import *
 
 
 def euclidianDistance(vectorOne, vectorTwo):
@@ -10,12 +10,13 @@ def euclidianDistance(vectorOne, vectorTwo):
     return math.sqrt(sum([pow(vectorOne[index] - vectorTwo[index], 2) for index in range(len(vectorOne))]))
 
 
+
 def sexDistance(instructorOne, instructorTwo):
     return 0 if instructorOne.sex == instructorTwo.sex else 1
 
 
 def gradeDistance(instructorOne, instructorTwo):
-    return euclidianDistance(instructorOne.gradevector, instructorTwo.gradevector)
+    return cdfDistance(instructorOne.gradevector, instructorTwo.gradevector)
 
 
 def wageDistance(instructorOne, instructorTwo):
@@ -282,5 +283,3 @@ def drive(minsize, maxsize):
 
 
 drive(2, 6)
-
-
