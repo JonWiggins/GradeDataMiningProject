@@ -1,5 +1,9 @@
 from DataLoader import *
 import numpy as np
+import matplotlib.pyplot as plt
+import statsmodels.api as sm
+
+
 
 
 def cumulativebycourse():
@@ -90,15 +94,20 @@ def printpremilresults():
 
     classes = cumulativebycourse()
 
-    print("CourseNum\tIntegral\tAvgVec")
+    print("CourseNum\tGPA\tGrade PDF")
     for number, vals in classes.items():
-        print(number, "\t", integrateclassbypdf(vals), "\t", vals.l1)
+        print(number, "\t", round(integrateclassbypdf(vals), 2), "\t", [round(x, 3) for x in vals.l1])
 
     instrucors = getInstructorsWithClasses()
     vals = integrateinstructorbypdf(instrucors)
-    print("Instructor\tIntegral\tAvgVec")
+    print("Instructor\tGPA\tMean Feedback\tGrade PDF\tFeedback PDF")
     for instructor, val in vals.items():
-        print(instructor.instructorname, "\t", val, "\t", instructor.gradepdf)
+        pdf = [0] * 6
+        if not sum(instructor.feedbackvector) == 0:
+            pdf = [x / sum(instructor.feedbackvector) for x in instructor.feedbackvector]
+        mean = sum([x[0] * x[1] for x in zip(pdf, [5, 4, 3, 2, 1, 0])])
+        print(instructor.instructorname, "\t", round(val, 2), "\t", round(mean, 3), "\t",
+              [round(x, 3) for x in instructor.gradepdf], "\t", [round(x, 3) for x in pdf])
 
 
 def gendergapfinder():
@@ -222,18 +231,33 @@ class CumulativeTitle:
 def regressiongatherer():
     instructors = integrateinstructorbypdf(getInstructorsWithClasses())
     print("GPA\tMean Review")
+    gpas = []
+    means = []
     for instructor, gpa in instructors.items():
         pdf = [0] * 6
         if not sum(instructor.feedbackvector) == 0:
             pdf = [x / sum(instructor.feedbackvector) for x in instructor.feedbackvector]
         mean = sum([x[0] * x[1] for x in zip(pdf, [5, 4, 3, 2, 1, 0])])
-        print(gpa, "\t", mean)
 
+        if not gpa == 0.0 and not mean == 0.0:
+            print(gpa, "\t", mean)
+            plt.scatter(gpa, mean, alpha=0.5)
+            gpas.append(gpa)
+            means.append(mean)
+    plt.xlabel("GPA")
+    plt.ylabel("Feedback")
+    plt.title("GPA vs Feedback Regression")
+    x = np.arange(2.3, 4.1, .1)
+    y = 2.15 + (x * .4976)
+    plt.plot(x, y)
+    plt.show()
+
+
+printpremilresults()
 
 # gendergapfinder()
 # titlegapfinder()
 
 # phillipsfinder()
-
-regressiongatherer()
+#regressiongatherer()
 
