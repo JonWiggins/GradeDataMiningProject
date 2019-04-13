@@ -110,25 +110,32 @@ def gendergapfinder():
     malegrades = [0] * 7
     femalegrades = [0] * 7
 
+    malefeedback = [0] * 6
+    femalefeedback = [0] * 6
+
     for instructor in instructors:
         if instructor.sex == "Male":
             malecount += 1
             maletotal += instructor.pay
             malegrades = [sum(x) for x in zip(malegrades, instructor.gradevector)]
+            malefeedback = [sum(x) for x in zip(malefeedback, instructor.feedbackvector)]
         else:
             femalecount += 1
             femaletotal += instructor.pay
             femalegrades = [sum(x) for x in zip(femalegrades, instructor.gradevector)]
+            femalefeedback = [sum(x) for x in zip(femalefeedback, instructor.feedbackvector)]
 
-    print("Gender\tCount\tAverage Pay\tGPA\tGrade PDF")
+    print("Gender\tCount\tAverage Pay\tGPA\tFeedback PDF\tGrade PDF")
     avgmalegrade = [x / sum(malegrades) for x in malegrades]
     avgfemalegrade = [x / sum(femalegrades) for x in femalegrades]
 
     maleGPA = (avgmalegrade[0] * 4) + (avgmalegrade[1] * 3) + (avgmalegrade[2] * 2) + (avgmalegrade[3] * 1)
     femaleGPA = (avgfemalegrade[0] * 4) + (avgfemalegrade[1] * 3) + (avgfemalegrade[2] * 2) + (avgfemalegrade[3] * 1)
 
-    print("Male\t", malecount, "\t", maletotal/malecount, "\t", maleGPA, "\t", avgmalegrade)
-    print("Female\t", femalecount, "\t", femaletotal/femalecount, "\t", femaleGPA, "\t", avgfemalegrade)
+    print("Male\t", malecount, "\t", maletotal/malecount, "\t", maleGPA, "\t",
+          [x / sum(malefeedback) for x in malefeedback], "\t", avgmalegrade)
+    print("Female\t", femalecount, "\t", femaletotal/femalecount, "\t", femaleGPA, "\t",
+          [x / sum(femalefeedback) for x in femalefeedback], "\t", avgfemalegrade)
 
 
 def titlegapfinder():
@@ -150,15 +157,22 @@ def titlegapfinder():
             else:
                 titles[title].femalecount += 1
 
-    print("Title\tAverage Pay\tMales\tFemales\tGPA\tGrade PDF")
+            for index in range(0, 6):
+                titles[title].feedback[index] += instructor.feedbackvector[index]
+
+            titles[title].feedback = [sum(x) for x in zip(titles[title].feedback, instructor.feedbackvector)]
+
+    print("Title\tAverage Pay\tMales\tFemales\tGPA\tL2 Feedback\tGrade PDF")
 
     for (title, values) in titles.items():
         l1vec = [0] * 7
         if not sum(values.gradevec) == 0:
             l1vec = [x / sum(values.gradevec) for x in values.gradevec]
         GPA = (l1vec[0] * 4) + (l1vec[1] * 3) + (l1vec[2] * 2) + (l1vec[3] * 1)
+        l2feedback = np.linalg.norm(values.feedback, 2)
+
         print(title, "\t", values.wage / (values.malecount + values.femalecount), "\t", values.malecount, "\t",
-              values.femalecount, "\t", GPA, "\t", l1vec)
+              values.femalecount, "\t", GPA, "\t", l2feedback, "\t", l1vec)
 
 
 def phillipsfinder():
@@ -170,6 +184,8 @@ def phillipsfinder():
             print("L1", instructor.gradepdf)
             print("L2,", instructor.l2gradevector)
             print("Courses Taught", instructor.teachinghistory)
+            print("Feedback", instructor.feedbackvector)
+            print("L2 Feedback,", instructor.l2feedback)
             return
 
 
@@ -195,6 +211,7 @@ class CumulativeTitle:
         self.gradevec = gradevec
         self.malecount = malecount
         self.femalecount = femalecount
+        self.feedback = [0] * 6
 
 
 def regressiongatherer():
@@ -204,10 +221,10 @@ def regressiongatherer():
         print(instructor.pay, "\t", gpa)
 
 
-gendergapfinder()
-# titlegapfinder()
+# gendergapfinder()
+titlegapfinder()
 
-# phillipsfinder()
+phillipsfinder()
 
 # regressiongatherer()
 

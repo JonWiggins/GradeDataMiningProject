@@ -32,7 +32,16 @@ def getallinstructors():
 
 def getInstructorsWithClasses():
     toreturn = getallinstructors()
-    
+
+    # load feedback
+    file = open("csvfiles/Feedback.csv")
+    feedback = {}
+    for line in file:
+        regex = r"\"(.*)\",(\d+),(\d+),(\d+),(\d+),(\d+),(\d+)"
+        match = re.match(regex, line)
+        if match:
+            feedback[match.group(1)] = [int(match.group(2)), int(match.group(3)), int(match.group(4)),
+                                        int(match.group(5)), int(match.group(6)), int(match.group(7))]
     # fill vectors
     for toadd in getallclasses().values():
         for instructor in toreturn:
@@ -45,9 +54,10 @@ def getInstructorsWithClasses():
                 instructor.gradevector[4] += toadd.e
                 instructor.gradevector[5] += toadd.w
                 instructor.gradevector[6] += toadd.other
-                instructor.teachinghistory.add("CS"+str(toadd.number)+str(toadd.semester))
+                instructor.teachinghistory.add("CS" + str(toadd.number)+str(toadd.semester))
 
     # Create l1 and l2 norm vecs
+    # And Add Feedback Vectors
     for instructor in toreturn:
         total = sum(instructor.gradevector)
         if total == 0:
@@ -60,6 +70,14 @@ def getInstructorsWithClasses():
         magnitude = np.sqrt(magnitude)
 
         instructor.l2gradevector = [x / magnitude for x in instructor.gradevector]
+
+        feedbackname = instructor.last + "," + instructor.first
+        if feedbackname in feedback:
+            instructor.feedbackvector = feedback[feedbackname]
+            instructor.l2feedback = [x / np.sqrt(sum([np.power(y, 2) for y in instructor.feedbackvector]))
+                                     for x in instructor.feedbackvector]
+        else:
+            print("Could not get feedback for:", feedbackname)
 
     return toreturn
 
@@ -151,6 +169,9 @@ class Instructor:
         self.gradepdf = []
         self.l2gradevector = []
         self.teachinghistory = set()
+
+        self.feedbackvector = [0] * 6
+        self.l2feedback = [0] * 6
         
     def __eq__(self, other):
         return self.instructorname == other.instructorname

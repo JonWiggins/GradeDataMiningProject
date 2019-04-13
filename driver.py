@@ -22,6 +22,10 @@ def wageDistance(instructorOne, instructorTwo):
     return euclidianDistance(instructorOne.wagevec, instructorTwo.wagevec)
 
 
+def feedbackDistance(instructorOne, instructorTwo):
+    return euclidianDistance(instructorOne.l2feedback, instructorTwo.l2feedback)
+
+
 def titleDistance(instructorOne, instructorTwo):
     return 1 - jaccardSimilarity(instructorOne.positions, instructorTwo.positions)
 
@@ -208,6 +212,7 @@ def testclusterings(clustername, clustermethod, minsize, maxsize):
         titleclusters = clustermethod(instructors, size, titleDistance)
         wageclusters = clustermethod(instructors, size, wageDistance)
         researchclusters = clustermethod(instructors, size, researchDistance)
+        feedbackclusters = clustermethod(instructors, size, feedbackDistance)
 
         print("Gender\t", 2, "\tGrade\t", size, "\t",
               jshat(genderclusters, gradeclusters), "\t", purity(genderclusters, gradeclusters),
@@ -248,6 +253,26 @@ def testclusterings(clustername, clustermethod, minsize, maxsize):
         print("Research\t", size, "\tWage\t", size, "\t",
               jshat(researchclusters, wageclusters), "\t", purity(researchclusters, wageclusters),
               "\t", fowlkesmallowsindex(researchclusters, wageclusters, instructors))
+
+        print("Feedback\t", size, "\tWage\t", size, "\t",
+              jshat(feedbackclusters, wageclusters), "\t", purity(feedbackclusters, wageclusters),
+              "\t", fowlkesmallowsindex(feedbackclusters, wageclusters, instructors))
+
+        print("Feedback\t", size, "\tResearch\t", size, "\t",
+              jshat(feedbackclusters, researchclusters), "\t", purity(feedbackclusters, researchclusters),
+              "\t", fowlkesmallowsindex(feedbackclusters, researchclusters, instructors))
+
+        print("Feedback\t", size, "\tGender\t", 2, "\t",
+              jshat(feedbackclusters, genderclusters), "\t", purity(feedbackclusters, genderclusters),
+              "\t", fowlkesmallowsindex(feedbackclusters, genderclusters, instructors))
+
+        print("Feedback\t", size, "\tGrade\t", size, "\t",
+              jshat(feedbackclusters, gradeclusters), "\t", purity(feedbackclusters, gradeclusters),
+              "\t", fowlkesmallowsindex(feedbackclusters, gradeclusters, instructors))
+
+        print("Feedback\t", size, "\tTitle\t", size, "\t",
+              jshat(feedbackclusters, titleclusters), "\t", purity(feedbackclusters, titleclusters),
+              "\t", fowlkesmallowsindex(feedbackclusters, titleclusters, instructors))
 
 
 def drive(minsize, maxsize):
