@@ -25,7 +25,7 @@ def centersToSets(centers, metrics, distanceFunction):
 
     for center in centers:
         subset = set()
-        
+
         for metric in metrics:
             if getCenter(centers, metric, distanceFunction) == center:
                 subset.add(metric)
@@ -41,7 +41,7 @@ def kMeansPP(metrics, centerCount, distanceFunction):
     while len(centers) < centerCount:
         distances = [pow(distanceToCenter(centers, metric, distanceFunction), 2) for metric in metrics]
         totalDistance = sum(distances)
-        
+
         for index in range(len(distances)):
             distances[index] /= totalDistance
 
@@ -51,7 +51,7 @@ def kMeansPP(metrics, centerCount, distanceFunction):
 
         for index in range(len(distances)):
             cumulative += distances[index];
-        
+
             if uniform <= cumulative:
                 centers.append(metrics[index])
                 break
@@ -59,7 +59,7 @@ def kMeansPP(metrics, centerCount, distanceFunction):
     return centersToSets(centers, metrics, distanceFunction)
 
 
-def gonzales(metrics, centerCount, distanceFunction):
+def Gonzales(metrics, centerCount, distanceFunction):
     centers = list()
     centers.append(metrics[0])
     dict_clusters = {}
@@ -81,20 +81,15 @@ def gonzales(metrics, centerCount, distanceFunction):
             if distanceFunction(metrics[j], dict_clusters[metrics[j]]) > distanceFunction(metrics[j], centers[i]):
                 dict_clusters[metrics[j]] = centers[i]
 
-	#return list of sets
+    # return list of sets
     return centersToSets(centers, metrics, distanceFunction)
 
 
-# TODO implement
-def lloyds(metrics, centerCount, distanceFunction):
-    return set()
-
-
-def heirarchical_cluster_single_link(metrics, centerCount, pointDistanceFunction):
+def SingleLink(metrics, centerCount, pointDistanceFunction):
     return heirarchical_cluster(metrics, centerCount, pointDistanceFunction, single_link_distance)
 
 
-def heirarchical_cluster_complete_link(metrics, centerCount, pointDistanceFunction):
+def CompleteLink(metrics, centerCount, pointDistanceFunction):
     return heirarchical_cluster(metrics, centerCount, pointDistanceFunction, complete_link_distance)
 
 
@@ -143,6 +138,3 @@ def complete_link_distance(set1, set2, distanceFunction):
 def merge_clusters(clusterData, index1, index2):
     clusterData[index1] = clusterData[index1].union(clusterData[index2])
     clusterData.pop(index2)
-
-
-

@@ -3,6 +3,7 @@ from Clustering import *
 from util import *
 from distances import *
 
+
 def printClustering(clusters):
     for cluster in clusters:
         print(len(cluster))
@@ -89,7 +90,7 @@ def jshat(clustering1, clustering2):
     if len(similaratities) == 0:
         return 0
 
-    return sum(similaratities) / len(similaratities)
+    return round(sum(similaratities) / len(similaratities), 3)
     # return similaratities
 
 
@@ -112,7 +113,7 @@ def purity(clustering1, clustering2):
     if N == 0:
         return 0
 
-    return summation / N
+    return round(summation / N, 3)
 
 
 def fowlkesmallowsindex(clustering1, clustering2, instructors):
@@ -167,7 +168,7 @@ def fowlkesmallowsindex(clustering1, clustering2, instructors):
 
     FM = np.sqrt(fpterm * fnterm)
 
-    return FM
+    return round(FM, 3)
 
 
 def testclusterings(clustername, clustermethod, minsize, maxsize):
@@ -245,11 +246,61 @@ def testclusterings(clustername, clustermethod, minsize, maxsize):
 
 
 def drive(minsize, maxsize):
-    testclusterings("kmeansPP", kMeansPP, minsize, maxsize)
-    testclusterings("Gonzales", gonzales, minsize, maxsize)
-    testclusterings("Lloyds", lloyds, minsize, maxsize)
-    testclusterings("heirarchical single", heirarchical_cluster_single_link, minsize, maxsize)
-    testclusterings("heirarchical complete", heirarchical_cluster_complete_link, minsize, maxsize)
+    testclusterings("kmeans++", kMeansPP, minsize, maxsize)
+    testclusterings("Gonzales", Gonzales, minsize, maxsize)
+    testclusterings("Heirarchical Single-Link", SingleLink, minsize, maxsize)
+    testclusterings("Heirarchical Complete", CompleteLink, minsize, maxsize)
 
 
-drive(2, 6)
+def compare():
+    clustermethods = [kMeansPP, Gonzales, CompleteLink, SingleLink]
+    instructors = getInstructorsWithClasses()
+
+    for i in range(0, len(clustermethods)):
+        method1 = clustermethods[i]
+        for j in range(i, len(clustermethods)):
+            method2 = clustermethods[j]
+
+            if method1.__name__ == method2.__name__:
+                continue
+            gradeclusters1 = method1(instructors, 3, gradeDistance)
+            titleclusters1 = method1(instructors, 3, titleDistance)
+            wageclusters1 = method1(instructors, 3, wageDistance)
+            researchclusters1 = method1(instructors, 3, researchDistance)
+            feedbackclusters1 = method1(instructors, 3, feedbackDistance)
+
+            gradeclusters2 = method2(instructors, 3, gradeDistance)
+            titleclusters2 = method2(instructors, 3, titleDistance)
+            wageclusters2 = method2(instructors, 3, wageDistance)
+            researchclusters2 = method2(instructors, 3, researchDistance)
+            feedbackclusters2 = method2(instructors, 3, feedbackDistance)
+
+            print(method1.__name__, "\t", method2.__name__)
+            print("Metric\tJSHat\tPurity\tFMI")
+            print("Grades\t", jshat(gradeclusters1, gradeclusters2), "\t", purity(gradeclusters1, gradeclusters2), "\t",
+                  fowlkesmallowsindex(gradeclusters1, gradeclusters2, instructors))
+            print("Title\t", jshat(titleclusters1, titleclusters2), "\t", purity(titleclusters1, titleclusters2), "\t",
+                  fowlkesmallowsindex(titleclusters1, titleclusters2, instructors))
+            print("Wage\t", jshat(wageclusters1, wageclusters2), "\t", purity(wageclusters1, wageclusters2), "\t",
+                  fowlkesmallowsindex(wageclusters1, wageclusters2, instructors))
+            print("Research Instrests\t", jshat(researchclusters1, researchclusters2), "\t",
+                  purity(researchclusters1, researchclusters2), "\t",
+                  fowlkesmallowsindex(researchclusters1, researchclusters2, instructors))
+            print("Feedback\t", jshat(feedbackclusters1, feedbackclusters2), "\t",
+                  purity(feedbackclusters1, feedbackclusters2), "\t",
+                  fowlkesmallowsindex(feedbackclusters1, feedbackclusters2, instructors))
+
+
+def rvw():
+    instructors = getInstructorsWithClasses()
+    researchclusters1 = kMeansPP(instructors, 3, researchDistance)
+    wageclusters1 = kMeansPP(instructors, 3, titleDistance)
+
+    printClustering(researchclusters1)
+    printClustering(wageclusters1)
+
+
+print(rvw())
+# drive(3, 4)
+# compare()
+

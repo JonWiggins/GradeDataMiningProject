@@ -30,7 +30,7 @@ def getallinstructors():
     return toreturn
 
 
-def getInstructorsWithClasses(silent=False):
+def getInstructorsWithClasses(silent=True):
     toreturn = getallinstructors()
 
     # load feedback
