@@ -248,6 +248,8 @@ def drive(minsize, maxsize):
     testclusterings("kmeansPP", kMeansPP, minsize, maxsize)
     testclusterings("Gonzales", gonzales, minsize, maxsize)
     testclusterings("Lloyds", lloyds, minsize, maxsize)
+    testclusterings("heirarchical single", heirarchical_cluster_single_link, minsize, maxsize)
+    testclusterings("heirarchical complete", heirarchical_cluster_complete_link, minsize, maxsize)
 
 
 drive(2, 6)
