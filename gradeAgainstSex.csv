@@ -1,0 +1,30 @@
+Primary Cluster 0 Table
+"Secondary Cluster Index", Count
+0,8
+1,1
+
+Primary Cluster 1 Table
+"Secondary Cluster Index", Count
+0,7
+1,0
+
+Primary Cluster 2 Table
+"Secondary Cluster Index", Count
+0,1
+1,2
+
+Primary Cluster 3 Table
+"Secondary Cluster Index", Count
+0,4
+1,0
+
+Primary Cluster 4 Table
+"Secondary Cluster Index", Count
+0,11
+1,2
+
+Primary Cluster 5 Table
+"Secondary Cluster Index", Count
+0,6
+1,0
+

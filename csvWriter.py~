@@ -1,0 +1,12 @@
+class CSVWriter:
+    def __init__(self):
+        self.cells = {}
+
+    def writeToFile(self, filePath):
+        pass
+
+    def writeCell(content, column, row):
+        if not row in cells:
+            cells[row] = {}
+
+        cells[row][column] = content

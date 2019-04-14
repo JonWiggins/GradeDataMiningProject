@@ -30,7 +30,7 @@ def getallinstructors():
     return toreturn
 
 
-def getInstructorsWithClasses():
+def getInstructorsWithClasses(silent=False):
     toreturn = getallinstructors()
 
     # load feedback
@@ -76,7 +76,7 @@ def getInstructorsWithClasses():
             instructor.feedbackvector = feedback[feedbackname]
             instructor.l2feedback = [x / np.sqrt(sum([np.power(y, 2) for y in instructor.feedbackvector]))
                                      for x in instructor.feedbackvector]
-        else:
+        elif not silent:
             print("Could not get feedback for:", feedbackname)
 
     return toreturn

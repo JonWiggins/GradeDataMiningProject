@@ -14,30 +14,16 @@ def normalize(vector, L=2):
     else:
         return [vector[i] / length for i in range(len(vector))]
 
+def getContainingClusterIndex(instructor, clusters):
+    for clusterIndex in range(len(clusters)):
+        cluster = clusters[clusterIndex]
+
+        if instructor in cluster:
+            return clusterIndex
+
+    raise Exception(f"Instructor {instructor.instructorname} was not in the given clusters")
 
 def jaccardSimilarity(setOne, setTwo):
     if len(setOne | setTwo) == 0:
         return 0
     return len(setOne & setTwo) / len(setOne | setTwo)
-
-
-# Distance functions
-def cdfDistance(vectorOne, vectorTwo):
-    if len(vectorOne) != len(vectorTwo):
-        raise Exception("Dimension Mismatch")
-
-    vectorOne = normalize(vectorOne, 1)
-    vectorTwo = normalize(vectorTwo, 1)
-    
-    sumOne = 0
-    sumTwo = 0
-
-    distance = 0
-
-    for i in range(len(vectorOne)):
-        sumOne += vectorOne[i]
-        sumTwo += vectorTwo[i]
-
-        distance += abs(sumOne - sumTwo)
-
-    return distance

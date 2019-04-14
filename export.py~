@@ -1,0 +1,3 @@
+def exportToGraphCSV(clusterOne, cluterTwo, filePath):
+    with open(filePath, "w") as file:
+        file.write("test")
