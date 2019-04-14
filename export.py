@@ -1,6 +1,7 @@
 from Clustering import *
 from distances import *
 from clusterTests import *
+from util import *
 
 from DataLoader import getInstructorsWithClasses
 from csvWriter import CSVWriter
@@ -95,12 +96,12 @@ clusters = {
     "sex": kMeansPP(instructors, 2, sexDistance),
     "title": kMeansPP(instructors, 5, titleDistance),
     "wage": kMeansPP(instructors, 4, wageDistance),
-    "research": kMeansPP(instructors, 6, researchDistance),
+    "research": kMeansPP(instructors, 15, researchDistance),
     "feedback": kMeansPP(instructors, 6, feedbackDistance)
 }
 
 descriptors = {
-    "grades": lambda instructor: instructor.gradevector,
+    "grades": lambda instructor: roundVector(instructor.gradepdf, 3),
     "sex": lambda instructor: instructor.sex,
     "title": lambda instructor: instructor.positions,
     "wage": lambda instructor: instructor.wagevec,

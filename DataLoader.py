@@ -118,11 +118,32 @@ def readinclassfile(filename):
 
 
 # TODO implement this
-def kgrams(string):
+def kgrams(string, k):
+        string = string.lower()
+        string = re.sub(r"[\.,/:\-\";\(\)]", " ", string)
+        string = re.sub(r"\s+", " ", string)
+        string = string.strip()
+
         input_list = string.split(' ')
+        #input_list = string
+        
         bigram_list = []
-        for i in range(len(input_list) - 2):
-            bigram_list.append((input_list[i], input_list[i + 1], input_list[i + 2]))
+        if len(input_list) < k:
+          gram = []
+
+          for i in range(len(input_list)):
+              gram.append(input_list[i])
+
+          bigram_list.append(tuple(gram))
+        else:
+            for i in range(len(input_list) - (k - 1)):
+                gram = []
+
+                for j in range(k):
+                    gram.append(input_list[i + j])
+            
+                bigram_list.append(tuple(gram))
+
         return set(bigram_list)
 
 
@@ -161,7 +182,7 @@ class Instructor:
         self.pay = self.salary + self.benifits + self.leave
         self.researchtext = researchinterests
 
-        self.researchkgram = kgrams(self.researchtext)
+        self.researchkgram = kgrams(self.researchtext, 2) | kgrams(self.researchtext, 3) | kgrams(self.researchtext, 4)
 
         self.classes = []
 
