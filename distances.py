@@ -31,8 +31,17 @@ def cdfDistance(vectorOne, vectorTwo):
 def sexDistance(instructorOne, instructorTwo):
     return 0 if instructorOne.sex == instructorTwo.sex else 1
 
-
+# the primary distance function for grades
 def gradeDistance(instructorOne, instructorTwo):
+    return gradeDistanceCDF(instructorOne, instructorTwo)
+
+def gradeDistanceGPA(instructorOne, instructorTwo):
+    return abs(calculateGPA(instructorOne.gradevector) - calculateGPA(instructorTwo.gradevector))
+
+def gradeDistanceL1(instructorOne, instructorTwo):
+    pass
+
+def gradeDistanceCDF(instructorOne, instructorTwo):
     return cdfDistance(instructorOne.gradevector, instructorTwo.gradevector)
 
 

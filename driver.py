@@ -181,6 +181,11 @@ def testclusterings(clustername, clustermethod, minsize, maxsize):
         titleclusters = clustermethod(instructors, size, titleDistance)
         wageclusters = clustermethod(instructors, size, wageDistance)
         researchclusters = clustermethod(instructors, size, researchDistance)
+        
+        # refine research clusters
+        for i in range(5):
+            researchclusters = refineClusters(researchclusters, instructors, researchDistance)
+        
         feedbackclusters = clustermethod(instructors, size, feedbackDistance)
 
         print("Gender\t", 2, "\tGrade\t", size, "\t",

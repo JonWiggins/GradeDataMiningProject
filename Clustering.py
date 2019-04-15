@@ -144,5 +144,37 @@ def merge_clusters(clusterData, index1, index2):
     clusterData[index1] = clusterData[index1].union(clusterData[index2])
     clusterData.pop(index2)
 
+    
 
 
+def getMaxDistance(instructor, cluster, distanceFunction):
+    maxDistance = 0
+
+    for otherInstructor in cluster:
+        distance = distanceFunction(instructor, otherInstructor)
+        
+        if distance > maxDistance:
+            maxDistance = distance
+
+    return maxDistance
+    
+def getRepresentative(cluster, distanceFunction):
+    representative = None
+    representativeDistance = None
+    
+    for instructor in cluster:
+        distance = getMaxDistance(instructor, cluster, distanceFunction)
+
+        if representative is None or distance < representativeDistance:
+            representative = instructor
+            representativeDistance = distance
+        
+    return representative
+    
+def refineClusters(clusters, instructors, distanceFunction):
+    newCenters = []
+    
+    for cluster in clusters:
+        newCenters.append(getRepresentative(cluster, distanceFunction))
+    
+    return centersToSets(newCenters, instructors, distanceFunction)
