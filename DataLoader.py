@@ -124,8 +124,8 @@ def kgrams(string, k):
         string = re.sub(r"\s+", " ", string)
         string = string.strip()
 
-        input_list = string.split(' ')
-        #input_list = string
+        #input_list = string.split(' ')
+        input_list = string
         
         bigram_list = []
         if len(input_list) < k:
@@ -182,7 +182,7 @@ class Instructor:
         self.pay = self.salary + self.benifits + self.leave
         self.researchtext = researchinterests
 
-        self.researchkgram = kgrams(self.researchtext, 2) | kgrams(self.researchtext, 3) | kgrams(self.researchtext, 4)
+        self.researchkgram = kgrams(self.researchtext, 5)
 
         self.classes = []
 

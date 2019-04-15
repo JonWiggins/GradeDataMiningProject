@@ -318,6 +318,6 @@ def rvw():
 
 
 # print(rvw())
-# drive(3, 4)
-compare()
+drive(3, 4)
+#compare()
 
