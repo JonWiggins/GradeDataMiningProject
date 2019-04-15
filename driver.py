@@ -274,7 +274,17 @@ def compare():
             wageclusters2 = method2(instructors, 3, wageDistance)
             researchclusters2 = method2(instructors, 3, researchDistance)
             feedbackclusters2 = method2(instructors, 3, feedbackDistance)
-
+            j = [jshat(gradeclusters1, gradeclusters2), jshat(titleclusters1, titleclusters2),
+                 jshat(wageclusters1, wageclusters2), jshat(researchclusters1, researchclusters2),
+                 jshat(feedbackclusters1, feedbackclusters2)]
+            p = [purity(gradeclusters1, gradeclusters2), purity(titleclusters1, titleclusters2),
+                 purity(researchclusters1, researchclusters2), purity(wageclusters1, wageclusters2),
+                 purity(feedbackclusters1, feedbackclusters2)]
+            f = [fowlkesmallowsindex(gradeclusters1, gradeclusters2, instructors),
+                 fowlkesmallowsindex(titleclusters1, titleclusters2, instructors),
+                 fowlkesmallowsindex(wageclusters1, wageclusters2, instructors),
+                 fowlkesmallowsindex(researchclusters1, researchclusters2, instructors),
+                 fowlkesmallowsindex(feedbackclusters1, feedbackclusters2, instructors)]
             print(method1.__name__, "\t", method2.__name__)
             print("Metric\tJSHat\tPurity\tFMI")
             print("Grades\t", jshat(gradeclusters1, gradeclusters2), "\t", purity(gradeclusters1, gradeclusters2), "\t",
@@ -289,6 +299,8 @@ def compare():
             print("Feedback\t", jshat(feedbackclusters1, feedbackclusters2), "\t",
                   purity(feedbackclusters1, feedbackclusters2), "\t",
                   fowlkesmallowsindex(feedbackclusters1, feedbackclusters2, instructors))
+            print("Averages\t", round(sum(j) / len(j), 3), "\t", round(sum(p) / len(p), 3), "\t",
+                  round(sum(f) / len(f), 3))
 
 
 def rvw():
@@ -300,7 +312,7 @@ def rvw():
     printClustering(wageclusters1)
 
 
-print(rvw())
+# print(rvw())
 # drive(3, 4)
-# compare()
+compare()
 
