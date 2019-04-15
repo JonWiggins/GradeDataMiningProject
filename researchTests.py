@@ -83,10 +83,10 @@ def printClusters(clusters):
 instructors = getInstructorsWithClasses(silent=True)
 
 clusteringMethods = {
-    "gonzales": gonzales,
+    "gonzales": Gonzales,
     "kMeansPP": kMeansPP,
-    "hSingleLink": heirarchical_cluster_single_link,
-    "hCompleteLink": heirarchical_cluster_complete_link
+    "hSingleLink": SingleLink,
+    "hCompleteLink": CompleteLink
 }
 
 if len(sys.argv) == 1:
